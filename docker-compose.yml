@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  data:
+    image: mariadb:10
+    container_name: knz-data
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MARIADB_DATABASE: ${DBNAME}
+      MARIADB_ROOT_PASSWORD: ${DBPSWD}
+      MARIADB_INITDB_SKIP_TZINFO: ${DBTZ}
+    volumes:
+      - ./data/:/var/lib/mysql:rw,nodev,relatime
+    networks:
+      - knz-net
+    ports:
+      - ${DBPORT}:${DKPORT}
+    
+networks:
+  knz-net:
+    name: knz-net
